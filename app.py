@@ -85,14 +85,20 @@ else:  # Játékos statisztika
         if only_akt:
             df = df[df["akt/last"].astype(str).str.startswith("igen")]
 
-    # Link oszlop -> kattinthato MLSZ link (display: "MLSZ profil")
+    # Oszlop-config: szukebb link, kek alahuzott; team es player rogzitve a bal oldalon.
     column_config = {}
     if "link" in df.columns:
         column_config["link"] = st.column_config.LinkColumn(
-            "MLSZ profil",
+            "MLSZ",
             help="Játékos MLSZ adatbank oldala",
-            display_text="MLSZ ↗",
+            display_text="↗",
+            width="small",
+            pinned=True,
         )
+    if "team" in df.columns:
+        column_config["team"] = st.column_config.Column("team", pinned=True)
+    if "player" in df.columns:
+        column_config["player"] = st.column_config.Column("player", pinned=True)
 
     st.dataframe(
         df,
