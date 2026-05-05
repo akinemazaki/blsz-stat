@@ -26,9 +26,11 @@ if not XLSX.exists():
 sheets = load_sheets(XLSX, XLSX.stat().st_mtime)
 sheet_names = list(sheets.keys())
 
-# Lapok kategorizalva: tabella vs stats
-tabella_sheets = [n for n in sheet_names if n.startswith("tabella_")]
-stats_sheets = [n for n in sheet_names if n.startswith("stats_")]
+# Lapok kategorizalva: tabella vs stats (uj 'blsz_*' prefix vagy regi prefix nelkul)
+tabella_sheets = [n for n in sheet_names
+                  if n.startswith("blsz_tabella_") or n.startswith("tabella_")]
+stats_sheets = [n for n in sheet_names
+                if n.startswith("blsz_stats_") or n.startswith("stats_")]
 
 # Sidebar
 st.sidebar.title("⚽ BLSZ Statisztika")
@@ -53,7 +55,8 @@ if view == "Tabella":
         st.stop()
     selected = st.sidebar.selectbox("Liga", tabella_sheets)
     df = sheets[selected]
-    st.title(selected.replace("tabella_", "Tabella – ").replace("_", " "))
+    title = selected.replace("blsz_tabella_", "").replace("tabella_", "")
+    st.title(f"Tabella – {title.replace('_', ' ')}")
     st.dataframe(df, use_container_width=True, height=720, hide_index=True)
     st.caption(f"{len(df)} sor")
 
@@ -63,7 +66,8 @@ else:  # Játékos statisztika
         st.stop()
     selected = st.sidebar.selectbox("Liga", stats_sheets)
     df = sheets[selected].copy()
-    st.title(selected.replace("stats_", "Statisztika – ").replace("_", " "))
+    title = selected.replace("blsz_stats_", "").replace("stats_", "")
+    st.title(f"Statisztika – {title.replace('_', ' ')}")
 
     # Szuro: csapat
     if "team" in df.columns:
