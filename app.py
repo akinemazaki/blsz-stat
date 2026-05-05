@@ -13,8 +13,9 @@ XLSX = Path(__file__).parent / "blsz_stat.xlsx"
 
 
 @st.cache_data
-def load_sheets(path):
-    """Beolvas minden lapot az xlsx-bol egy dict-be."""
+def load_sheets(path, mtime):
+    """Beolvas minden lapot az xlsx-bol egy dict-be.
+    A mtime parameter cache-buster: ha a fajl frissult, uj cache-key lesz."""
     return pd.read_excel(path, sheet_name=None, engine="openpyxl")
 
 
@@ -22,7 +23,7 @@ if not XLSX.exists():
     st.error(f"Hianyzo fajl: {XLSX.name}. Masold ide a friss xlsx-et.")
     st.stop()
 
-sheets = load_sheets(XLSX)
+sheets = load_sheets(XLSX, XLSX.stat().st_mtime)
 sheet_names = list(sheets.keys())
 
 # Lapok kategorizalva: tabella vs stats
