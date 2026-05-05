@@ -96,7 +96,7 @@ else:  # Játékos statisztika
             pinned=True,
         )
     if "team" in df.columns:
-        column_config["team"] = st.column_config.Column("team", pinned=True)
+        column_config["team"] = st.column_config.Column("team", pinned=False)
     if "player" in df.columns:
         column_config["player"] = st.column_config.Column("player", pinned=True)
 
