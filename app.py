@@ -36,6 +36,16 @@ view = st.sidebar.radio(
     ["Tabella", "Játékos statisztika"],
 )
 
+# Letoltes link a teljes xlsx-hez
+with open(XLSX, "rb") as _f:
+    st.sidebar.download_button(
+        label="📥 Teljes xlsx letöltése",
+        data=_f.read(),
+        file_name=XLSX.name,
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        use_container_width=True,
+    )
+
 if view == "Tabella":
     if not tabella_sheets:
         st.warning("Nincs tabella lap.")
