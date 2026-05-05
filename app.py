@@ -74,5 +74,20 @@ else:  # Játékos statisztika
         if only_akt:
             df = df[df["akt/last"].astype(str).str.startswith("igen")]
 
-    st.dataframe(df, use_container_width=True, height=720, hide_index=True)
+    # Link oszlop -> kattinthato MLSZ link (display: "MLSZ profil")
+    column_config = {}
+    if "link" in df.columns:
+        column_config["link"] = st.column_config.LinkColumn(
+            "MLSZ profil",
+            help="Játékos MLSZ adatbank oldala",
+            display_text="MLSZ ↗",
+        )
+
+    st.dataframe(
+        df,
+        use_container_width=True,
+        height=720,
+        hide_index=True,
+        column_config=column_config,
+    )
     st.caption(f"{len(df)} sor")
